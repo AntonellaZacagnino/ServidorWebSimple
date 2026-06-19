@@ -95,3 +95,24 @@ C:\Users\Anto\Documents\Facultad\Programacion sobre redes\ServidorWebSimple\obj\
 C:\Users\Anto\Documents\Facultad\Programacion sobre redes\ServidorWebSimple\obj\Debug\net10.0\ServidorWebSimple.pdb
 C:\Users\Anto\Documents\Facultad\Programacion sobre redes\ServidorWebSimple\obj\Debug\net10.0\ServidorWebSimple.genruntimeconfig.cache
 C:\Users\Anto\Documents\Facultad\Programacion sobre redes\ServidorWebSimple\obj\Debug\net10.0\ref\ServidorWebSimple.dll
+C:\Users\roberto\cody\ServidorWebSimple\bin\Debug\net10.0\wwwroot\404.html
+C:\Users\roberto\cody\ServidorWebSimple\bin\Debug\net10.0\wwwroot\index.html
+C:\Users\roberto\cody\ServidorWebSimple\bin\Debug\net10.0\wwwroot\pruebaGzip.docx
+C:\Users\roberto\cody\ServidorWebSimple\bin\Debug\net10.0\SimpleHttpServer.exe
+C:\Users\roberto\cody\ServidorWebSimple\bin\Debug\net10.0\SimpleHttpServer.deps.json
+C:\Users\roberto\cody\ServidorWebSimple\bin\Debug\net10.0\SimpleHttpServer.runtimeconfig.json
+C:\Users\roberto\cody\ServidorWebSimple\bin\Debug\net10.0\SimpleHttpServer.dll
+C:\Users\roberto\cody\ServidorWebSimple\bin\Debug\net10.0\SimpleHttpServer.pdb
+C:\Users\roberto\cody\ServidorWebSimple\obj\Debug\net10.0\ServidorWebSimple.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\roberto\cody\ServidorWebSimple\obj\Debug\net10.0\ServidorWebSimple.AssemblyInfoInputs.cache
+C:\Users\roberto\cody\ServidorWebSimple\obj\Debug\net10.0\ServidorWebSimple.AssemblyInfo.cs
+C:\Users\roberto\cody\ServidorWebSimple\obj\Debug\net10.0\ServidorWebSimple.csproj.CoreCompileInputs.cache
+C:\Users\roberto\cody\ServidorWebSimple\obj\Debug\net10.0\ServidorWebSimple.sourcelink.json
+C:\Users\roberto\cody\ServidorWebSimple\obj\Debug\net10.0\SimpleHttpServer.dll
+C:\Users\roberto\cody\ServidorWebSimple\obj\Debug\net10.0\refint\SimpleHttpServer.dll
+C:\Users\roberto\cody\ServidorWebSimple\obj\Debug\net10.0\SimpleHttpServer.pdb
+C:\Users\roberto\cody\ServidorWebSimple\obj\Debug\net10.0\ServidorWebSimple.genruntimeconfig.cache
+C:\Users\roberto\cody\ServidorWebSimple\obj\Debug\net10.0\ref\SimpleHttpServer.dll
+C:\Users\roberto\cody\ServidorWebSimple\bin\Debug\net10.0\config.json
+C:\Users\roberto\cody\ServidorWebSimple\bin\Debug\net10.0\wwwroot\pruebaGzip.jpg
+C:\Users\roberto\cody\ServidorWebSimple\bin\Debug\net10.0\wwwroot\pruebaGzip.pdf

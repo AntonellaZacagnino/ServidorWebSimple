@@ -1,0 +1,46 @@
+[2026-06-19 18:29:47.316] [IP:127.0.0.1] POST body recibido en '/api/echo' -> mensaje=esta+es+una+prueba+de+post
+[2026-06-19 18:29:54.901] [IP:127.0.0.1] GET / -> 200 OK (1296 bytes, text/html; charset=utf-8, gzip=True)
+[2026-06-19 18:30:09.124] [IP:127.0.0.1] POST body recibido en '/api/echo' -> mensaje=esto+es+una+prueba
+[2026-06-19 18:34:19.773] [IP:127.0.0.1] GET / -> 200 OK (1296 bytes, text/html; charset=utf-8, gzip=True)
+[2026-06-19 18:38:12.408] [IP:127.0.0.1] GET / -> 200 OK (2397 bytes, text/html; charset=utf-8, gzip=True)
+[2026-06-19 18:38:22.278] [IP:127.0.0.1] Query params en '/index.html' -> nombre=Anto, curso=arquitectura
+[2026-06-19 18:38:22.280] [IP:127.0.0.1] GET /index.html?nombre=Anto&curso=arquitectura -> 200 OK (2397 bytes, text/html; charset=utf-8, gzip=True)
+[2026-06-19 18:38:49.848] [IP:127.0.0.1] POST body recibido en '/api/echo' -> mensaje=hola+esto+es+una+pueba+post
+[2026-06-19 18:39:02.898] [IP:127.0.0.1] GET / -> 200 OK (2397 bytes, text/html; charset=utf-8, gzip=True)
+[2026-06-19 18:50:07.075] [IP:127.0.0.1] Query params en '/index.html' -> nombre=Anto, curso=arquitectura
+[2026-06-19 18:50:07.076] [IP:127.0.0.1] GET /index.html?nombre=Anto&curso=arquitectura -> 200 OK (2397 bytes, text/html; charset=utf-8, gzip=True)
+[2026-06-19 18:56:24.523] [IP:127.0.0.1] Query params en '/index.html' -> nombre=Anto, curso=arquitectura
+[2026-06-19 18:56:24.525] [IP:127.0.0.1] GET /index.html?nombre=Anto&curso=arquitectura -> 200 OK (2355 bytes, text/html; charset=utf-8, gzip=True)
+[2026-06-19 18:56:39.815] [IP:127.0.0.1] Query params en '/index.html' -> nombre=Anto, curso=arquitectura
+[2026-06-19 18:56:39.816] [IP:127.0.0.1] GET /index.html?nombre=Anto&curso=arquitectura -> 200 OK (2355 bytes, text/html; charset=utf-8, gzip=True)
+[2026-06-19 18:56:49.344] [IP:127.0.0.1] GET /index.html? -> 200 OK (2355 bytes, text/html; charset=utf-8, gzip=True)
+[2026-06-19 18:56:51.563] [IP:127.0.0.1] GET /index.html? -> 200 OK (2355 bytes, text/html; charset=utf-8, gzip=True)
+[2026-06-19 19:20:30.028] [IP:127.0.0.1] GET /index.html? -> 200 OK (3022 bytes, text/html; charset=utf-8, gzip=True)
+[2026-06-19 19:21:06.656] [IP:127.0.0.1] GET /pruebaGzip.pdf -> 200 OK (191889 bytes, application/pdf, gzip=True)
+[2026-06-19 19:21:06.723] [IP:127.0.0.1] GET /favicon.ico -> 404 Not Found
+[2026-06-19 19:21:11.926] [IP:127.0.0.1] GET /pruebaGzip.jpg -> 200 OK (344422 bytes, image/jpeg, gzip=True)
+[2026-06-19 19:21:15.511] [IP:127.0.0.1] GET /pruebaGzip.docx -> 200 OK (37769 bytes, application/vnd.openxmlformats-officedocument.wordprocessingml.document, gzip=True)
+[2026-06-19 19:26:59.596] [IP:127.0.0.1] Query params en '/index.html' -> nombre=Anto, curso=arquitectura
+[2026-06-19 19:26:59.597] [IP:127.0.0.1] GET /index.html?nombre=Anto&curso=arquitectura -> 200 OK (3022 bytes, text/html; charset=utf-8, gzip=True)
+[2026-06-19 19:35:56.653] [IP:127.0.0.1] Query params en '/index.html' -> nombre=Anto, curso=arquitectura
+[2026-06-19 19:35:56.658] [IP:127.0.0.1] GET /index.html?nombre=Anto&curso=arquitectura -> 200 OK (3084 bytes, text/html; charset=utf-8, gzip=True)
+[2026-06-19 19:42:53.503] [IP:127.0.0.1] Query params en '/index.html' -> nombre=Anto, curso=arquitectura
+[2026-06-19 19:42:53.505] [IP:127.0.0.1] GET /index.html?nombre=Anto&curso=arquitectura -> 200 OK (3177 bytes, text/html; charset=utf-8, gzip=True)
+[2026-06-19 19:45:21.459] [IP:127.0.0.1] Query params en '/index.html' -> nombre=Anto, curso=arquitectura
+[2026-06-19 19:45:21.460] [IP:127.0.0.1] GET /index.html?nombre=Anto&curso=arquitectura -> 200 OK (3177 bytes, text/html; charset=utf-8, gzip=True)
+[2026-06-19 19:49:47.976] [IP:127.0.0.1] Query params en '/index.html' -> nombre=Anto, curso=arquitectura
+[2026-06-19 19:49:47.978] [IP:127.0.0.1] GET /index.html?nombre=Anto&curso=arquitectura -> 200 OK (3178 bytes, text/html; charset=utf-8, gzip=True)
+[2026-06-19 19:51:47.382] [IP:127.0.0.1] Query params en '/index.html' -> nombre=Anto, curso=arquitectura
+[2026-06-19 19:51:47.383] [IP:127.0.0.1] GET /index.html?nombre=Anto&curso=arquitectura -> 200 OK (3182 bytes, text/html; charset=utf-8, gzip=True)
+[2026-06-19 20:00:22.594] [IP:127.0.0.1] Query params en '/index.html' -> nombre=Anto, curso=arquitectura
+[2026-06-19 20:00:22.595] [IP:127.0.0.1] GET /index.html?nombre=Anto&curso=arquitectura -> 200 OK (3043 bytes, text/html; charset=utf-8, gzip=True)
+[2026-06-19 20:01:07.625] [IP:127.0.0.1] Query params en '/index.html' -> nombre=Anto, curso=arquitectura
+[2026-06-19 20:01:07.626] [IP:127.0.0.1] GET /index.html?nombre=Anto&curso=arquitectura -> 200 OK (3078 bytes, text/html; charset=utf-8, gzip=True)
+[2026-06-19 20:01:37.917] [IP:127.0.0.1] Query params en '/index.html' -> nombre=Anto, curso=arquitectura
+[2026-06-19 20:01:37.917] [IP:127.0.0.1] GET /index.html?nombre=Anto&curso=arquitectura -> 200 OK (3019 bytes, text/html; charset=utf-8, gzip=True)
+[2026-06-19 20:02:12.821] [IP:127.0.0.1] Query params en '/index.html' -> nombre=Anto, curso=arquitectura
+[2026-06-19 20:02:12.822] [IP:127.0.0.1] GET /index.html?nombre=Anto&curso=arquitectura -> 200 OK (3036 bytes, text/html; charset=utf-8, gzip=True)
+[2026-06-19 20:03:11.137] [IP:127.0.0.1] Query params en '/index.html' -> nombre=Anto, curso=arquitectura
+[2026-06-19 20:03:11.138] [IP:127.0.0.1] GET /index.html?nombre=Anto&curso=arquitectura -> 200 OK (3030 bytes, text/html; charset=utf-8, gzip=True)
+[2026-06-19 20:04:21.425] [IP:127.0.0.1] GET /prueba -> 404 Not Found
+[2026-06-19 20:04:26.286] [IP:127.0.0.1] GET / -> 200 OK (3030 bytes, text/html; charset=utf-8, gzip=True)

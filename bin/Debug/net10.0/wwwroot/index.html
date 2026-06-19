@@ -20,10 +20,19 @@
     <div class="card">
         <h1>SimpleHttpServer</h1>
         <h2>IFTS 11 - desarrollo de software</h2>
-        <p>Servidor HTTP implementado en .NET sobre <code>Socket</code> (capa de transporte), sin frameworks web adicionales. Parseo HTTP manual.</p>
-        <p></p>
-        <p><strong>Docente =</strong> Victor D’Angela</p>
-        <p><strong>Alumnos =</strong> Zacagnino A. - Singuri R.</p>
+        <p>Servidor HTTP minimalista implementado en .NET sobre <code>Socket</code> (capa de transporte),
+           sin frameworks web adicionales. Parseo HTTP manual.</p>
+        <p>
+    </div>
+
+    <div class="card">
+        <h2>GET con par&aacute;metros de consulta (Req. 7)</h2>
+        <p>Los par&aacute;metros se env&iacute;an en la URL y el servidor los registra en el log.
+           Hac&eacute; clic en el enlace de abajo para probar:</p>
+        <p><a class="test-link" href="/index.html?nombre=Anto">
+            /index.html?nombre=Anto
+        </a></p>
+        <p><small>Tambi&eacute;n pod&eacute;s escribir cualquier URL con <code>?clave=valor</code> en la barra del navegador.</small></p>
     </div>
 
     <div class="card">
@@ -38,24 +47,15 @@
     </div>
 
     <div class="card">
-        <h2>GET con par&aacute;metros de consulta (Req. 7)</h2>
-        <p>Los par&aacute;metros se env&iacute;an en la URL y el servidor los registra en el log.
-           Hac&eacute; clic en el enlace de abajo para probar:</p>
-        <p><a class="test-link" href="/index.html?nombre=Anto">
-            /index.html?nombre=Anto
-        </a></p>
-        <p><small>Tambi&eacute;n pod&eacute;s escribir cualquier URL con <code>?clave=valor</code> en la barra del navegador.</small></p>
-    </div>
-
-    <div class="card">
         <h2>Compresi&oacute;n GZip (Req. 8)</h2>
-        <p>El servidor comprime las respuestas si el navegador acepta gzip. Se verifica en el archivo LOG </p>
-
+        <p>El servidor comprime las respuestas si el navegador acepta gzip.
+           Verific&aacute; el header <code>Content-Encoding: gzip</code> en F12 &gt; Network,
+           o revis&aacute; el log diario.</p>
         <p>Archivos de prueba:</p>
         <ul>
             <li><a href="/pruebaGzip.pdf">pruebaGzip.pdf</a> (application/pdf)</li>
             <li><a href="/pruebaGzip.jpg">pruebaGzip.jpg</a> (image/jpeg)</li>
-            <li><a href="/pruebaGzip.docx">pruebaGzip.docx</a> (archivo word)</li>
+            <li><a href="/pruebaGzip.docx">pruebaGzip.docx</a> (application/vnd.openxmlformats-officedocument.wordprocessingml.document)</li>
         </ul>
     </div>
 </body>

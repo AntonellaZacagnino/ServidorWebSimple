@@ -1,0 +1,7 @@
+{
+  "Port": 8080,
+  "RootFolder": "wwwroot",
+  "LogFolder": "logs",
+  "DefaultDocument": "index.html",
+  "NotFoundDocument": "404.html"
+}

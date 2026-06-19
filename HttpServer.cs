@@ -6,8 +6,10 @@ using System.Text;
 namespace SimpleHttpServer;
 
 /// <summary>
-/// Servidor HTTP minimalista implementado únicamente sobre <see cref="TcpListener"/>/<see cref="Socket"/>
-/// (Requisito 10). No usa HttpListener, Kestrel ni ningún framework web.
+/// Servidor HTTP minimalista implementado únicamente sobre <see cref="Socket"/>
+/// (Requisito 10). No usa HttpListener, Kestrel, TcpListener ni ningún framework web.
+/// El transporte es socket TCP puro; las lecturas usan NetworkStream como simple
+/// adaptador de stream sobre el socket, sin buffering ni lógica HTTP.
 ///
 /// Cubre:
 ///  - Atención concurrente e indefinida de solicitudes (Req. 1) delegando cada
@@ -39,8 +41,9 @@ public class HttpServer
     /// </summary>
     public async Task RunAsync()
     {
-        var listener = new TcpListener(IPAddress.Any, _config.Port);
-        listener.Start();
+        var listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+        listener.Bind(new IPEndPoint(IPAddress.Any, _config.Port));
+        listener.Listen(100);
 
         Console.WriteLine($"[SimpleHttpServer] Escuchando en el puerto {_config.Port}.");
         Console.WriteLine($"[SimpleHttpServer] Carpeta raíz de archivos: '{_rootFullPath}'.");
@@ -49,24 +52,24 @@ public class HttpServer
 
         while (true)
         {
-            var client = await listener.AcceptTcpClientAsync();
+            var clientSocket = await listener.AcceptAsync();
             // Cada conexión se atiende en su propio hilo del ThreadPool: concurrencia indefinida (Req. 1)
-            _ = Task.Run(() => HandleClient(client));
+            _ = Task.Run(() => HandleClient(clientSocket));
         }
     }
 
-    private void HandleClient(TcpClient client)
+    private void HandleClient(Socket clientSocket)
     {
         var clientIp = "unknown";
 
         try
         {
-            if (client.Client.RemoteEndPoint is IPEndPoint endpoint)
+            if (clientSocket.RemoteEndPoint is IPEndPoint endpoint)
             {
                 clientIp = endpoint.Address.ToString();
             }
 
-            using var stream = client.GetStream();
+            using var stream = new NetworkStream(clientSocket);
             var reader = new HttpStreamReader(stream);
             var request = HttpRequestParser.Parse(reader);
 
@@ -86,6 +89,23 @@ public class HttpServer
             if (request.Method == "POST")
             {
                 RequestLogger.Log(clientIp, $"POST body recibido en '{request.Path}' -> {request.Body}");
+
+                var html = $"<html><head><meta charset=\"UTF-8\"><title>POST recibido</title>" +
+                           "<style>body{{font-family:Arial,sans-serif;background:#f4f4f4;margin:0;padding:40px;}}" +
+                           ".card{{background:#fff;max-width:640px;margin:auto;padding:32px;border-radius:8px;" +
+                           "box-shadow:0 2px 8px rgba(0,0,0,.1)}}h1{{color:#2c3e50}}" +
+                           "code{{background:#eee;padding:2px 6px;border-radius:4px}}" +
+                           "a{{color:#3498db}}</style></head>" +
+                           "<body><div class=\"card\">" +
+                           "<h1>POST recibido correctamente</h1>" +
+                           $"<p>Ruta: <code>{request.Path}</code></p>" +
+                           $"<p>Datos: <code>{System.Net.WebUtility.HtmlEncode(request.Body)}</code></p>" +
+                           "<p><a href=\"/\">Volver al inicio</a></p>" +
+                           "</div></body></html>";
+
+                var bodyBytes = Encoding.UTF8.GetBytes(html);
+                SendResponse(stream, 200, "OK", "text/html; charset=utf-8", bodyBytes, false);
+                return;
             }
 
             if (request.Method != "GET" && request.Method != "POST")
@@ -102,7 +122,8 @@ public class HttpServer
         }
         finally
         {
-            client.Close();
+            try { clientSocket.Shutdown(SocketShutdown.Both); } catch { }
+            clientSocket.Close();
         }
     }
 

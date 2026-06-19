@@ -21,6 +21,7 @@ public static class MimeTypes
         [".svg"] = "image/svg+xml",
         [".ico"] = "image/x-icon",
         [".pdf"] = "application/pdf",
+        [".docx"] = "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
         [".woff"] = "font/woff",
         [".woff2"] = "font/woff2",
     };

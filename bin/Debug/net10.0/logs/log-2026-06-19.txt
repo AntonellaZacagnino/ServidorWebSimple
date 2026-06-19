@@ -1,0 +1,3 @@
+[2026-06-19 18:19:29.708] [IP:127.0.0.1] GET / -> 200 OK (1296 bytes, text/html; charset=utf-8, gzip=True)
+[2026-06-19 18:19:29.834] [IP:127.0.0.1] GET /favicon.ico -> 404 Not Found
+[2026-06-19 18:19:59.399] [IP:127.0.0.1] GET /pruebaGzip.docx -> 200 OK (37769 bytes, application/octet-stream, gzip=True)
