@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>SimpleHttpServer - Inicio</title>
+    <style>
+        body { font-family: Arial, sans-serif; background:#f4f4f4; margin:0; padding:40px; }
+        .card { background:#fff; max-width:640px; margin:auto; padding:32px; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,.1);}
+        h1 { color:#2c3e50; }
+        code { background:#eee; padding:2px 6px; border-radius:4px; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>¡Servidor funcionando!</h1>
+        <p>Este es el documento por defecto (<code>index.html</code>) servido por <strong>SimpleHttpServer</strong>,
+           un servidor HTTP minimalista implementado en .NET sobre <code>Socket</code>/<code>TcpListener</code>,
+           sin frameworks web adicionales.</p>
+        <p>Probá enviar parámetros de consulta, por ejemplo:
+           <code>/index.html?nombre=Anto&curso=arquitectura</code> — quedarán registrados en el log diario.</p>
+        <form method="POST" action="/api/echo">
+            <input type="text" name="mensaje" placeholder="Escribí algo y enviá un POST" style="width:70%;padding:6px;">
+            <button type="submit">Enviar (POST)</button>
+        </form>
+    </div>
+</body>
+</html>

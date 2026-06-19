@@ -1,0 +1,223 @@
+using System.IO.Compression;
+using System.Net;
+using System.Net.Sockets;
+using System.Text;
+
+namespace SimpleHttpServer;
+
+/// <summary>
+/// Servidor HTTP minimalista implementado únicamente sobre <see cref="TcpListener"/>/<see cref="Socket"/>
+/// (Requisito 10). No usa HttpListener, Kestrel ni ningún framework web.
+///
+/// Cubre:
+///  - Atención concurrente e indefinida de solicitudes (Req. 1) delegando cada
+///    conexión aceptada a un Task del ThreadPool.
+///  - index.html por defecto (Req. 2).
+///  - Carpeta de archivos y puerto configurables externamente (Req. 3 y 4, ver ServerConfig).
+///  - 404 personalizado (Req. 5).
+///  - GET y POST, logueando el body de los POST (Req. 6).
+///  - Logueo de query params (Req. 7).
+///  - Compresión gzip de las respuestas (Req. 8).
+///  - Log diario con IP de origen (Req. 9, ver RequestLogger).
+/// </summary>
+public class HttpServer
+{
+    private readonly ServerConfig _config;
+    private readonly string _rootFullPath;
+
+    public HttpServer(ServerConfig config)
+    {
+        _config = config;
+        Directory.CreateDirectory(_config.RootFolder);
+        _rootFullPath = Path.GetFullPath(_config.RootFolder);
+    }
+
+    /// <summary>
+    /// Inicia el ciclo de aceptación de conexiones. Cada cliente aceptado se procesa
+    /// en un hilo del ThreadPool (Task.Run), de modo que el servidor pueda atender
+    /// un número indefinido de solicitudes en simultáneo sin bloquear el aceptador.
+    /// </summary>
+    public async Task RunAsync()
+    {
+        var listener = new TcpListener(IPAddress.Any, _config.Port);
+        listener.Start();
+
+        Console.WriteLine($"[SimpleHttpServer] Escuchando en el puerto {_config.Port}.");
+        Console.WriteLine($"[SimpleHttpServer] Carpeta raíz de archivos: '{_rootFullPath}'.");
+        Console.WriteLine($"[SimpleHttpServer] Logs en: '{Path.GetFullPath(_config.LogFolder)}'.");
+        Console.WriteLine("[SimpleHttpServer] Presione Ctrl+C para detener.");
+
+        while (true)
+        {
+            var client = await listener.AcceptTcpClientAsync();
+            // Cada conexión se atiende en su propio hilo del ThreadPool: concurrencia indefinida (Req. 1)
+            _ = Task.Run(() => HandleClient(client));
+        }
+    }
+
+    private void HandleClient(TcpClient client)
+    {
+        var clientIp = "unknown";
+
+        try
+        {
+            if (client.Client.RemoteEndPoint is IPEndPoint endpoint)
+            {
+                clientIp = endpoint.Address.ToString();
+            }
+
+            using var stream = client.GetStream();
+            var reader = new HttpStreamReader(stream);
+            var request = HttpRequestParser.Parse(reader);
+
+            if (request == null)
+            {
+                return; // conexión vacía o cerrada por el cliente antes de enviar datos
+            }
+
+            // Requisito 7: los parámetros de query string sólo se loguean
+            if (request.QueryParams.Count > 0)
+            {
+                var queryLog = string.Join(", ", request.QueryParams.Select(kv => $"{kv.Key}={kv.Value}"));
+                RequestLogger.Log(clientIp, $"Query params en '{request.Path}' -> {queryLog}");
+            }
+
+            // Requisito 6: para POST, sólo se loguean los datos recibidos
+            if (request.Method == "POST")
+            {
+                RequestLogger.Log(clientIp, $"POST body recibido en '{request.Path}' -> {request.Body}");
+            }
+
+            if (request.Method != "GET" && request.Method != "POST")
+            {
+                HandleUnsupportedMethod(stream, request, clientIp);
+                return;
+            }
+
+            ServeFile(stream, request, clientIp);
+        }
+        catch (Exception ex)
+        {
+            RequestLogger.Log(clientIp, $"ERROR procesando la solicitud: {ex.Message}");
+        }
+        finally
+        {
+            client.Close();
+        }
+    }
+
+    private void HandleUnsupportedMethod(NetworkStream stream, HttpRequest request, string clientIp)
+    {
+        var body = Encoding.UTF8.GetBytes(
+            "405 - Método no soportado. Este servidor sólo acepta solicitudes GET y POST.");
+
+        RequestLogger.Log(clientIp, $"{request.Method} {request.RawTarget} -> 405 Method Not Allowed");
+        SendResponse(stream, 405, "Method Not Allowed", "text/plain; charset=utf-8", body, AcceptsGzip(request));
+    }
+
+    private void ServeFile(NetworkStream stream, HttpRequest request, string clientIp)
+    {
+        var isGzip = AcceptsGzip(request);
+
+        // Requisito 2: si la URL no especifica archivo (path "/"), se sirve el documento por defecto
+        var decodedPath = Uri.UnescapeDataString(request.Path);
+        var requestedPath = decodedPath == "/" ? "/" + _config.DefaultDocument : decodedPath;
+
+        var combinedPath = Path.GetFullPath(Path.Combine(_rootFullPath, requestedPath.TrimStart('/')));
+
+        // Medida de seguridad: el archivo resuelto debe permanecer dentro de la carpeta raíz configurada
+        // (evita acceder a archivos arbitrarios del sistema mediante "../" en la URL).
+        var rootWithSeparator = _rootFullPath.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)
+                                 + Path.DirectorySeparatorChar;
+        var staysInsideRoot = combinedPath.StartsWith(rootWithSeparator, StringComparison.OrdinalIgnoreCase)
+                               || string.Equals(combinedPath, _rootFullPath, StringComparison.OrdinalIgnoreCase);
+
+        if (!staysInsideRoot || !File.Exists(combinedPath))
+        {
+            Send404(stream, request, clientIp, isGzip);
+            return;
+        }
+
+        byte[] fileBytes;
+        try
+        {
+            fileBytes = File.ReadAllBytes(combinedPath);
+        }
+        catch (IOException)
+        {
+            Send404(stream, request, clientIp, isGzip);
+            return;
+        }
+
+        var contentType = MimeTypes.GetContentType(combinedPath);
+        RequestLogger.Log(clientIp,
+            $"{request.Method} {request.RawTarget} -> 200 OK ({fileBytes.Length} bytes, {contentType}, gzip={isGzip})");
+
+        SendResponse(stream, 200, "OK", contentType, fileBytes, isGzip);
+    }
+
+    // Requisito 5: 404 con documento personalizado cuando el archivo solicitado no existe
+    private void Send404(NetworkStream stream, HttpRequest request, string clientIp, bool isGzip)
+    {
+        var notFoundPath = Path.Combine(_rootFullPath, _config.NotFoundDocument);
+        byte[] body;
+        string contentType;
+
+        if (File.Exists(notFoundPath))
+        {
+            body = File.ReadAllBytes(notFoundPath);
+            contentType = MimeTypes.GetContentType(notFoundPath);
+        }
+        else
+        {
+            // Resguardo por si el 404.html configurado no existe en la carpeta raíz
+            body = Encoding.UTF8.GetBytes("<html><body><h1>404 - Recurso no encontrado</h1></body></html>");
+            contentType = "text/html; charset=utf-8";
+        }
+
+        RequestLogger.Log(clientIp, $"{request.Method} {request.RawTarget} -> 404 Not Found");
+        SendResponse(stream, 404, "Not Found", contentType, body, isGzip);
+    }
+
+    // Requisito 8: compresión de la respuesta cuando el cliente la acepta (Accept-Encoding: gzip)
+    private static void SendResponse(NetworkStream stream, int statusCode, string statusText,
+        string contentType, byte[] bodyBytes, bool useGzip)
+    {
+        var finalBody = bodyBytes;
+        string? contentEncoding = null;
+
+        if (useGzip)
+        {
+            using var compressedStream = new MemoryStream();
+            using (var gzip = new GZipStream(compressedStream, CompressionLevel.Optimal, leaveOpen: true))
+            {
+                gzip.Write(bodyBytes, 0, bodyBytes.Length);
+            }
+            finalBody = compressedStream.ToArray();
+            contentEncoding = "gzip";
+        }
+
+        var header = new StringBuilder();
+        header.Append($"HTTP/1.1 {statusCode} {statusText}\r\n");
+        header.Append($"Content-Type: {contentType}\r\n");
+        if (contentEncoding != null)
+        {
+            header.Append($"Content-Encoding: {contentEncoding}\r\n");
+        }
+        header.Append($"Content-Length: {finalBody.Length}\r\n");
+        header.Append("Connection: close\r\n");
+        header.Append("Server: SimpleHttpServer-NET\r\n");
+        header.Append("\r\n");
+
+        var headerBytes = Encoding.ASCII.GetBytes(header.ToString());
+        stream.Write(headerBytes, 0, headerBytes.Length);
+        stream.Write(finalBody, 0, finalBody.Length);
+        stream.Flush();
+    }
+
+    private static bool AcceptsGzip(HttpRequest request)
+    {
+        return request.Headers.TryGetValue("Accept-Encoding", out var encoding) &&
+               encoding.Contains("gzip", StringComparison.OrdinalIgnoreCase);
+    }
+}
