@@ -44,3 +44,22 @@
 [2026-06-19 20:03:11.138] [IP:127.0.0.1] GET /index.html?nombre=Anto&curso=arquitectura -> 200 OK (3030 bytes, text/html; charset=utf-8, gzip=True)
 [2026-06-19 20:04:21.425] [IP:127.0.0.1] GET /prueba -> 404 Not Found
 [2026-06-19 20:04:26.286] [IP:127.0.0.1] GET / -> 200 OK (3030 bytes, text/html; charset=utf-8, gzip=True)
+[2026-06-19 20:12:26.730] [IP:127.0.0.1] GET / -> 200 OK (3030 bytes, text/html; charset=utf-8, gzip=True)
+[2026-06-19 20:35:43.231] [IP:127.0.0.1] GET / -> 200 OK (3030 bytes, text/html; charset=utf-8, gzip=True)
+[2026-06-19 20:35:55.566] [IP:127.0.0.1] POST body recibido en '/api/echo' -> mensaje=esto+es+un+post
+[2026-06-19 20:37:32.399] [IP:127.0.0.1] POST body recibido en '/api/echo' -> mensaje=esto+es+un+post
+[2026-06-19 20:37:38.403] [IP:127.0.0.1] GET / -> 200 OK (3664 bytes, text/html; charset=utf-8, gzip=True)
+[2026-06-19 20:37:41.092] [IP:127.0.0.1] POST body recibido en '/api/echo' -> mensaje=esto%20es%20un%20post
+[2026-06-19 20:42:15.337] [IP:127.0.0.1] GET / -> 200 OK (3664 bytes, text/html; charset=utf-8, gzip=True)
+[2026-06-19 20:42:37.262] [IP:127.0.0.1] POST body recibido en '/api/echo' -> mensaje=muestra%20de%20como%20funciona%20el%20post
+[2026-06-19 20:43:33.597] [IP:127.0.0.1] POST body recibido en '/api/echo' -> mensaje=es%20un%20gato
+[2026-06-19 20:44:48.381] [IP:127.0.0.1] Query params en '/' -> nombre=minombre
+[2026-06-19 20:44:48.386] [IP:127.0.0.1] GET /?nombre=minombre -> 200 OK (3664 bytes, text/html; charset=utf-8, gzip=True)
+[2026-06-19 20:45:36.339] [IP:127.0.0.1] Query params en '/index.html' -> nombre=Anto
+[2026-06-19 20:45:36.340] [IP:127.0.0.1] GET /index.html?nombre=Anto -> 200 OK (3664 bytes, text/html; charset=utf-8, gzip=True)
+[2026-06-19 20:46:03.577] [IP:127.0.0.1] GET / -> 200 OK (3664 bytes, text/html; charset=utf-8, gzip=True)
+[2026-06-19 20:47:03.251] [IP:127.0.0.1] GET /pruebaGzip.jpg -> 200 OK (344422 bytes, image/jpeg, gzip=True)
+[2026-06-19 20:47:58.567] [IP:127.0.0.1] GET /pruebaGzip.pdf -> 200 OK (191889 bytes, application/pdf, gzip=True)
+[2026-06-19 20:47:58.654] [IP:127.0.0.1] GET /favicon.ico -> 404 Not Found
+[2026-06-19 20:48:13.192] [IP:127.0.0.1] GET /pruebaGzip.docx -> 200 OK (37769 bytes, application/vnd.openxmlformats-officedocument.wordprocessingml.document, gzip=True)
+[2026-06-19 20:48:45.543] [IP:127.0.0.1] GET /215478 -> 404 Not Found

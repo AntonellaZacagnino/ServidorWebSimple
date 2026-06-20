@@ -1,7 +1,0 @@
-[2026-06-19 12:54:52.834] [IP:127.0.0.1] GET / -> 200 OK (1269 bytes, text/html; charset=utf-8, gzip=True)
-[2026-06-19 12:54:54.350] [IP:127.0.0.1] POST body recibido en '/api/echo' -> mensaje=a
-[2026-06-19 12:54:54.350] [IP:127.0.0.1] POST /api/echo -> 404 Not Found
-[2026-06-19 12:56:56.506] [IP:127.0.0.1] GET / -> 200 OK (1269 bytes, text/html; charset=utf-8, gzip=True)
-[2026-06-19 12:57:00.408] [IP:127.0.0.1] POST body recibido en '/api/echo' -> mensaje=a
-[2026-06-19 12:57:00.409] [IP:127.0.0.1] POST /api/echo -> 404 Not Found
-[2026-06-19 12:57:01.440] [IP:127.0.0.1] GET / -> 200 OK (1269 bytes, text/html; charset=utf-8, gzip=True)

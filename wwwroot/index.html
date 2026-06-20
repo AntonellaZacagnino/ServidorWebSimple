@@ -29,13 +29,24 @@
     <div class="card">
         <h2>POST por formulario (Req. 6)</h2>
         <p>Complet&aacute; el campo y presion&aacute; <strong>Enviar</strong>. El servidor loguea los datos
-           y responde con una p&aacute;gina de confirmaci&oacute;n mostrando lo recibido.</p>
+           y se muestra la confirmaci&oacute;n sin salir de esta p&aacute;gina.</p>
         <p><small>Ejemplo: escrib&iacute; <code>Hola, esto es una prueba de POST</code> en el campo.</small></p>
-        <form method="POST" action="/api/echo">
-            <input type="text" name="mensaje" placeholder="Escrib&iacute; un mensaje de prueba" style="width:70%;">
+        <form id="post-form" method="POST" action="/api/echo">
+            <input type="text" name="mensaje" id="mensaje" placeholder="Escrib&iacute; un mensaje de prueba" style="width:70%;">
             <button type="submit">Enviar (POST)</button>
         </form>
+        <p id="post-result" style="margin-top:12px;color:#27ae60;font-weight:bold;"></p>
     </div>
+
+    <script>
+        document.getElementById('post-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            var msg = document.getElementById('mensaje').value;
+            var resp = await fetch('/api/echo', { method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body:'mensaje='+encodeURIComponent(msg) });
+            var text = await resp.text();
+            document.getElementById('post-result').textContent = 'Servidor: ' + text;
+        });
+    </script>
 
     <div class="card">
         <h2>GET con par&aacute;metros de consulta (Req. 7)</h2>

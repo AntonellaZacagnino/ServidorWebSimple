@@ -89,22 +89,8 @@ public class HttpServer
             if (request.Method == "POST")
             {
                 RequestLogger.Log(clientIp, $"POST body recibido en '{request.Path}' -> {request.Body}");
-
-                var html = $"<html><head><meta charset=\"UTF-8\"><title>POST recibido</title>" +
-                           "<style>body{{font-family:Arial,sans-serif;background:#f4f4f4;margin:0;padding:40px;}}" +
-                           ".card{{background:#fff;max-width:640px;margin:auto;padding:32px;border-radius:8px;" +
-                           "box-shadow:0 2px 8px rgba(0,0,0,.1)}}h1{{color:#2c3e50}}" +
-                           "code{{background:#eee;padding:2px 6px;border-radius:4px}}" +
-                           "a{{color:#3498db}}</style></head>" +
-                           "<body><div class=\"card\">" +
-                           "<h1>POST recibido correctamente</h1>" +
-                           $"<p>Ruta: <code>{request.Path}</code></p>" +
-                           $"<p>Datos: <code>{System.Net.WebUtility.HtmlEncode(request.Body)}</code></p>" +
-                           "<p><a href=\"/\">Volver al inicio</a></p>" +
-                           "</div></body></html>";
-
-                var bodyBytes = Encoding.UTF8.GetBytes(html);
-                SendResponse(stream, 200, "OK", "text/html; charset=utf-8", bodyBytes, false);
+                var bodyBytes = Encoding.UTF8.GetBytes($"POST recibido: {request.Body}");
+                SendResponse(stream, 200, "OK", "text/plain; charset=utf-8", bodyBytes, false);
                 return;
             }
 
