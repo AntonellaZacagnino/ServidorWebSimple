@@ -5,41 +5,19 @@ using System.Text;
 
 namespace SimpleHttpServer;
 
-/// <summary>
-/// Servidor HTTP minimalista implementado únicamente sobre <see cref="Socket"/>
-/// (Requisito 10). No usa HttpListener, Kestrel, TcpListener ni ningún framework web.
-/// El transporte es socket TCP puro; las lecturas usan NetworkStream como simple
-/// adaptador de stream sobre el socket, sin buffering ni lógica HTTP.
-///
-/// Cubre:
-///  - Atención concurrente e indefinida de solicitudes (Req. 1) delegando cada
-///    conexión aceptada a un Task del ThreadPool.
-///  - index.html por defecto (Req. 2).
-///  - Carpeta de archivos y puerto configurables externamente (Req. 3 y 4, ver ServerConfig).
-///  - 404 personalizado (Req. 5).
-///  - GET y POST, logueando el body de los POST (Req. 6).
-///  - Logueo de query params (Req. 7).
-///  - Compresión gzip de las respuestas (Req. 8).
-///  - Log diario con IP de origen (Req. 9, ver RequestLogger).
-/// </summary>
 public class HttpServer
 {
     private readonly ServerConfig _config;
     private readonly string _rootFullPath;
 
-    public HttpServer(ServerConfig config)
+    public HttpServer(ServerConfig config) // metodo que toma la configuracion personalizada
     {
         _config = config;
         Directory.CreateDirectory(_config.RootFolder);
         _rootFullPath = Path.GetFullPath(_config.RootFolder);
     }
 
-    /// <summary>
-    /// Inicia el ciclo de aceptación de conexiones. Cada cliente aceptado se procesa
-    /// en un hilo del ThreadPool (Task.Run), de modo que el servidor pueda atender
-    /// un número indefinido de solicitudes en simultáneo sin bloquear el aceptador.
-    /// </summary>
-    public async Task RunAsync()
+    public async Task RunAsync() //capa de transporte
     {
         var listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         listener.Bind(new IPEndPoint(IPAddress.Any, _config.Port));
@@ -50,15 +28,15 @@ public class HttpServer
         Console.WriteLine($"[SimpleHttpServer] Logs en: '{Path.GetFullPath(_config.LogFolder)}'.");
         Console.WriteLine("[SimpleHttpServer] Presione Ctrl+C para detener.");
 
+        // Cada conexión se atiende en su propio hilo del ThreadPool: concurrencia indefinida (Req. 1)
         while (true)
         {
-            var clientSocket = await listener.AcceptAsync();
-            // Cada conexión se atiende en su propio hilo del ThreadPool: concurrencia indefinida (Req. 1)
+            var clientSocket = await listener.AcceptAsync();            
             _ = Task.Run(() => HandleClient(clientSocket));
         }
     }
 
-    private void HandleClient(Socket clientSocket)
+    private void HandleClient(Socket clientSocket) //capa controlador de solicitudes
     {
         var clientIp = "unknown";
 
@@ -92,35 +70,22 @@ public class HttpServer
                 var bodyBytes = Encoding.UTF8.GetBytes($"POST recibido: {request.Body}");
                 SendResponse(stream, 200, "OK", "text/plain; charset=utf-8", bodyBytes, false);
                 return;
-            }
-
-            if (request.Method != "GET" && request.Method != "POST")
-            {
-                HandleUnsupportedMethod(stream, request, clientIp);
-                return;
-            }
+            }           
 
             ServeFile(stream, request, clientIp);
         }
+
         catch (Exception ex)
         {
             RequestLogger.Log(clientIp, $"ERROR procesando la solicitud: {ex.Message}");
         }
+
         finally
         {
             try { clientSocket.Shutdown(SocketShutdown.Both); } catch { }
             clientSocket.Close();
         }
-    }
-
-    private void HandleUnsupportedMethod(NetworkStream stream, HttpRequest request, string clientIp)
-    {
-        var body = Encoding.UTF8.GetBytes(
-            "405 - Método no soportado. Este servidor sólo acepta solicitudes GET y POST.");
-
-        RequestLogger.Log(clientIp, $"{request.Method} {request.RawTarget} -> 405 Method Not Allowed");
-        SendResponse(stream, 405, "Method Not Allowed", "text/plain; charset=utf-8", body, AcceptsGzip(request));
-    }
+    }    
 
     private void ServeFile(NetworkStream stream, HttpRequest request, string clientIp)
     {
@@ -187,8 +152,7 @@ public class HttpServer
     }
 
     // Requisito 8: compresión de la respuesta cuando el cliente la acepta (Accept-Encoding: gzip)
-    private static void SendResponse(NetworkStream stream, int statusCode, string statusText,
-        string contentType, byte[] bodyBytes, bool useGzip)
+    private static void SendResponse(NetworkStream stream, int statusCode, string statusText, string contentType, byte[] bodyBytes, bool useGzip)
     {
         var finalBody = bodyBytes;
         string? contentEncoding = null;
@@ -207,10 +171,12 @@ public class HttpServer
         var header = new StringBuilder();
         header.Append($"HTTP/1.1 {statusCode} {statusText}\r\n");
         header.Append($"Content-Type: {contentType}\r\n");
+       
         if (contentEncoding != null)
         {
             header.Append($"Content-Encoding: {contentEncoding}\r\n");
         }
+       
         header.Append($"Content-Length: {finalBody.Length}\r\n");
         header.Append("Connection: close\r\n");
         header.Append("Server: SimpleHttpServer-NET\r\n");

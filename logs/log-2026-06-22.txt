@@ -1,0 +1,12 @@
+[2026-06-22 16:56:06.704] [IP:127.0.0.1] GET / -> 200 OK (3664 bytes, text/html; charset=utf-8, gzip=True)
+[2026-06-22 16:56:57.114] [IP:127.0.0.1] Query params en '/' -> felino=gato
+[2026-06-22 16:56:57.122] [IP:127.0.0.1] GET /?felino=gato -> 200 OK (3664 bytes, text/html; charset=utf-8, gzip=True)
+[2026-06-22 16:57:14.183] [IP:127.0.0.1] Query params en '/index.html' -> nombre=Anto
+[2026-06-22 16:57:14.185] [IP:127.0.0.1] GET /index.html?nombre=Anto -> 200 OK (3664 bytes, text/html; charset=utf-8, gzip=True)
+[2026-06-22 16:57:38.373] [IP:127.0.0.1] GET /pruebaGzip.jpg -> 200 OK (344422 bytes, image/jpeg, gzip=True)
+[2026-06-22 16:58:08.304] [IP:127.0.0.1] GET /pruebaGzip.png -> 404 Not Found
+[2026-06-22 16:58:24.308] [IP:127.0.0.1] GET /%7D -> 404 Not Found
+[2026-06-22 16:58:27.439] [IP:127.0.0.1] GET / -> 200 OK (3664 bytes, text/html; charset=utf-8, gzip=True)
+[2026-06-22 16:58:59.684] [IP:127.0.0.1] Query params en '/' -> esto es una prueba de que funciona el post=
+[2026-06-22 16:58:59.687] [IP:127.0.0.1] GET /?esto%20es%20una%20prueba%20de%20que%20funciona%20el%20post -> 200 OK (3664 bytes, text/html; charset=utf-8, gzip=True)
+[2026-06-22 16:59:33.991] [IP:127.0.0.1] POST body recibido en '/api/echo' -> mensaje=segunda%20prueba

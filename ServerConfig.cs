@@ -2,11 +2,6 @@ using System.Text.Json;
 
 namespace SimpleHttpServer;
 
-/// <summary>
-/// Representa la configuración externa del servidor (Requisitos 3 y 4).
-/// Se carga desde un archivo JSON ubicado junto al ejecutable, de modo que
-/// el puerto y la carpeta de archivos puedan cambiarse sin recompilar.
-/// </summary>
 public class ServerConfig
 {
     public int Port { get; set; } = 8080;
@@ -21,10 +16,6 @@ public class ServerConfig
         PropertyNameCaseInsensitive = true
     };
 
-    /// <summary>
-    /// Carga la configuración desde <paramref name="path"/>. Si el archivo no existe,
-    /// crea uno con valores por defecto para facilitar la primera ejecución.
-    /// </summary>
     public static ServerConfig Load(string path)
     {
         if (!File.Exists(path))

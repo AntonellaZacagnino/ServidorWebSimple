@@ -1,8 +1,5 @@
 namespace SimpleHttpServer;
 
-/// <summary>
-/// Resuelve el encabezado Content-Type según la extensión del archivo solicitado.
-/// </summary>
 public static class MimeTypes
 {
     private static readonly Dictionary<string, string> Map = new(StringComparer.OrdinalIgnoreCase)

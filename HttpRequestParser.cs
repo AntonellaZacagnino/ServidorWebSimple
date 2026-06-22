@@ -2,12 +2,6 @@ using System.Text;
 
 namespace SimpleHttpServer;
 
-/// <summary>
-/// Parsea manualmente una solicitud HTTP/1.x leída byte a byte desde el socket.
-/// Cubre: método, ruta, parámetros de query string (Req. 7), encabezados y,
-/// para POST, el cuerpo según Content-Length (Req. 6). No se usa ninguna
-/// librería HTTP de alto nivel (Req. 10).
-/// </summary>
 public static class HttpRequestParser
 {
     public static HttpRequest? Parse(HttpStreamReader reader)

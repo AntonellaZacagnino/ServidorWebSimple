@@ -1,9 +1,5 @@
 namespace SimpleHttpServer;
 
-/// <summary>
-/// Representa una solicitud HTTP ya parseada manualmente desde el socket
-/// (sin HttpListener ni librerías de servidor web - Requisito 10).
-/// </summary>
 public class HttpRequest
 {
     public string Method { get; set; } = "";
